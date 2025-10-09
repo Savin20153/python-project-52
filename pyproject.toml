@@ -1,0 +1,21 @@
+[project]
+name = "hexlet-code"
+version = "0.1.0"
+description = "Task Manager Django app"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "Django>=4.2,<5",
+    "gunicorn>=21.2",
+    "python-dotenv>=1.0",
+    "dj-database-url>=2.0",
+    "psycopg2-binary>=2.9",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["task_manager*"]
