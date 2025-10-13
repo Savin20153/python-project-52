@@ -1,0 +1,54 @@
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.deletion import ProtectedError
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+
+from .models import Status
+from .forms import StatusForm
+
+
+class StatusListView(LoginRequiredMixin, ListView):
+    model = Status
+    template_name = 'statuses/index.html'
+    context_object_name = 'statuses'
+
+
+class StatusCreateView(LoginRequiredMixin, CreateView):
+    model = Status
+    form_class = StatusForm
+    template_name = 'statuses/create.html'
+    success_url = reverse_lazy('statuses_index')
+
+    def form_valid(self, form):
+        messages.success(self.request, _("Status created successfully."))
+        return super().form_valid(form)
+
+
+class StatusUpdateView(LoginRequiredMixin, UpdateView):
+    model = Status
+    form_class = StatusForm
+    template_name = 'statuses/update.html'
+    success_url = reverse_lazy('statuses_index')
+
+    def form_valid(self, form):
+        messages.success(self.request, _("Status updated successfully."))
+        return super().form_valid(form)
+
+
+class StatusDeleteView(LoginRequiredMixin, DeleteView):
+    model = Status
+    template_name = 'statuses/delete.html'
+    success_url = reverse_lazy('statuses_index')
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            response = super().post(request, *args, **kwargs)
+            messages.success(self.request, _("Status deleted successfully."))
+            return response
+        except ProtectedError:
+            messages.error(self.request, _("Cannot delete status because it is in use."))
+            return self.get(request, *args, **kwargs)
+
