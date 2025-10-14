@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db.models.deletion import ProtectedError
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
@@ -58,7 +59,12 @@ class UserDeleteView(LoginRequiredMixin, OnlySelfMixin, DeleteView):
     template_name = 'users/delete.html'
     success_url = reverse_lazy('users_index')
 
-    def delete(self, request, *args, **kwargs):
-        messages.success(self.request, _("User deleted successfully."))
-        return super().delete(request, *args, **kwargs)
-
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            response = super().post(request, *args, **kwargs)
+            messages.success(self.request, _("User deleted successfully."))
+            return response
+        except ProtectedError:
+            messages.error(self.request, _("Cannot delete user because it is in use."))
+            return self.get(request, *args, **kwargs)
