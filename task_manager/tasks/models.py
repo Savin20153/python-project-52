@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 
 from task_manager.statuses.models import Status
+from task_manager.labels.models import Label
 
 
 User = get_user_model()
@@ -16,6 +17,12 @@ class Task(models.Model):
         on_delete=models.PROTECT,
         related_name='tasks',
         verbose_name=_('Status'),
+    )
+    labels = models.ManyToManyField(
+        Label,
+        blank=True,
+        related_name='tasks',
+        verbose_name=_('Labels'),
     )
     author = models.ForeignKey(
         User,
@@ -40,4 +47,3 @@ class Task(models.Model):
 
     def __str__(self) -> str:
         return self.name
-
