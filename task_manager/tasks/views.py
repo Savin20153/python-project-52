@@ -2,16 +2,21 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
+from django_filters.views import FilterView
 
 from .models import Task
 from .forms import TaskForm
 
 
-class TaskListView(LoginRequiredMixin, ListView):
+from .filters import TaskFilter
+
+
+class TaskListView(LoginRequiredMixin, FilterView):
     model = Task
     template_name = 'tasks/index.html'
     context_object_name = 'tasks'
+    filterset_class = TaskFilter
 
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
@@ -63,4 +68,3 @@ class TaskDeleteView(LoginRequiredMixin, OnlyAuthorDeleteMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, _("Task deleted successfully."))
         return super().delete(request, *args, **kwargs)
-

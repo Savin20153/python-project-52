@@ -1,9 +1,17 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n django_bootstrap5 %}
 
 {% block content %}
   <h1 class="mb-4">{% trans 'Tasks' %}</h1>
   <a class="btn btn-primary mb-3" href="{% url 'tasks_create' %}">{% trans 'Create task' %}</a>
+  <div class="card mb-3">
+    <div class="card-body">
+      <form method="get">
+        {% bootstrap_form filter.form %}
+        <button type="submit" class="btn btn-primary">{% trans 'Show' %}</button>
+      </form>
+    </div>
+  </div>
   <table class="table table-striped">
     <thead>
       <tr>
