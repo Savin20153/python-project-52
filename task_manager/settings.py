@@ -33,10 +33,14 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 # Allow default hosts plus required 'webserver' for Render internal networking
 _allowed_hosts_env = os.getenv("ALLOWED_HOSTS")
+_render_host = os.getenv("RENDER_EXTERNAL_HOSTNAME")
 if _allowed_hosts_env:
     ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts_env.split(",") if h.strip()]
 else:
     ALLOWED_HOSTS = ["webserver", "localhost", "127.0.0.1"]
+    # Automatically allow Render external hostname if present
+    if _render_host:
+        ALLOWED_HOSTS.append(_render_host)
 
 
 # Application definition
