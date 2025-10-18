@@ -7,7 +7,7 @@ build:
 	./build.sh
 
 install:
-	uv pip install --system -e .
+	uv pip install --system -e . && uv pip install --system rollbar
 
 migrate:
 	uv run python task_manager/manage.py migrate --noinput
