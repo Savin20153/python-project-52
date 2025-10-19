@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.db.models.deletion import ProtectedError
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -50,8 +51,15 @@ class UserUpdateView(LoginRequiredMixin, OnlySelfMixin, UpdateView):
     success_url = reverse_lazy('users_index')
 
     def form_valid(self, form):
+        response = super().form_valid(form)
+        # Смена пароля, если введён
+        password = form.cleaned_data.get("password")
+        if password:
+            self.object.set_password(password)
+            self.object.save(update_fields=["password"])
+            update_session_auth_hash(self.request, self.object)
         messages.success(self.request, _("Пользователь успешно изменён"))
-        return super().form_valid(form)
+        return response
 
 
 class UserDeleteView(LoginRequiredMixin, OnlySelfMixin, DeleteView):

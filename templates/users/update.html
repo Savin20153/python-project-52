@@ -6,13 +6,6 @@
   <form method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <!--
-      Тесты ожидают наличие полей пароля с пустым значением.
-      Эти поля не участвуют в форме обновления и скрыты.
-    -->
-    <input type="password" id="id_password" style="display:none;">
-    <input type="password" id="id_password1" style="display:none;">
-    <input type="password" id="id_password2" style="display:none;">
     <button type="submit" class="btn btn-primary">Изменить</button>
   </form>
 {% endblock %}
