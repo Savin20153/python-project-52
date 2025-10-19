@@ -33,7 +33,7 @@ class StatusUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('statuses_index')
 
     def form_valid(self, form):
-        messages.success(self.request, _("Статус успешно изменён"))
+        messages.success(self.request, _("Статус успешно изменен"))
         return super().form_valid(form)
 
 
@@ -46,7 +46,7 @@ class StatusDeleteView(LoginRequiredMixin, DeleteView):
         self.object = self.get_object()
         try:
             response = super().post(request, *args, **kwargs)
-            messages.success(self.request, _("Статус успешно удалён"))
+            messages.success(self.request, _("Статус успешно удален"))
             return response
         except ProtectedError:
             messages.error(self.request, _("Невозможно удалить статус, потому что он используется"))

@@ -58,7 +58,7 @@ class UserUpdateView(LoginRequiredMixin, OnlySelfMixin, UpdateView):
             self.object.set_password(password)
             self.object.save(update_fields=["password"])
             update_session_auth_hash(self.request, self.object)
-        messages.success(self.request, _("Пользователь успешно изменён"))
+        messages.success(self.request, _("Пользователь успешно изменен"))
         return response
 
 
@@ -71,7 +71,7 @@ class UserDeleteView(LoginRequiredMixin, OnlySelfMixin, DeleteView):
         self.object = self.get_object()
         try:
             response = super().post(request, *args, **kwargs)
-            messages.success(self.request, _("Пользователь успешно удалён"))
+            messages.success(self.request, _("Пользователь успешно удален"))
             return response
         except ProtectedError:
             messages.error(self.request, _("Невозможно удалить пользователя, потому что он используется"))
