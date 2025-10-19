@@ -24,7 +24,7 @@ class OnlySelfMixin(UserPassesTestMixin):
         return self.request.user.is_authenticated and obj.pk == self.request.user.pk
 
     def handle_no_permission(self):
-        messages.error(self.request, _("You do not have permission to modify another user."))
+        messages.error(self.request, _("У вас нет прав для изменения другого пользователя"))
         return self.get_no_permission_redirect()
 
     def get_no_permission_redirect(self):
@@ -39,7 +39,7 @@ class UserCreateView(CreateView):
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        messages.success(self.request, _("User registered successfully."))
+        messages.success(self.request, _("Пользователь успешно зарегистрирован"))
         return super().form_valid(form)
 
 
@@ -50,7 +50,7 @@ class UserUpdateView(LoginRequiredMixin, OnlySelfMixin, UpdateView):
     success_url = reverse_lazy('users_index')
 
     def form_valid(self, form):
-        messages.success(self.request, _("User updated successfully."))
+        messages.success(self.request, _("Пользователь успешно изменён"))
         return super().form_valid(form)
 
 
@@ -63,8 +63,8 @@ class UserDeleteView(LoginRequiredMixin, OnlySelfMixin, DeleteView):
         self.object = self.get_object()
         try:
             response = super().post(request, *args, **kwargs)
-            messages.success(self.request, _("User deleted successfully."))
+            messages.success(self.request, _("Пользователь успешно удалён"))
             return response
         except ProtectedError:
-            messages.error(self.request, _("Cannot delete user because it is in use."))
+            messages.error(self.request, _("Невозможно удалить пользователя, потому что он используется"))
             return self.get(request, *args, **kwargs)
