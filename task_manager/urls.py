@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
-from django.contrib.auth.views import LoginView, LogoutView
+from task_manager.auth_views import CustomLoginView, custom_logout
 from task_manager.rollbar_test_views import rollbar_test_view
 
 urlpatterns = [
@@ -27,7 +27,7 @@ urlpatterns = [
     path('statuses/', include('task_manager.statuses.urls')),
     path('labels/', include('task_manager.labels.urls')),
     path('tasks/', include('task_manager.tasks.urls')),
-    path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', custom_logout, name='logout'),
     path('rollbar-test/', rollbar_test_view, name='rollbar_test'),
 ]

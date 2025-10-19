@@ -5,7 +5,8 @@
   <h1 class="mb-4">Вход</h1>
   <form method="post">
     {% csrf_token %}
-    {% bootstrap_form form %}
+    {% bootstrap_field form.username placeholder="Имя пользователя" %}
+    {% bootstrap_field form.password placeholder="Пароль" %}
     <button type="submit" class="btn btn-primary">Войти</button>
   </form>
 {% endblock %}
