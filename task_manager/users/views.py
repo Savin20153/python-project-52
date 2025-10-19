@@ -53,7 +53,7 @@ class UserUpdateView(LoginRequiredMixin, OnlySelfMixin, UpdateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         # Смена пароля, если введён
-        password = form.cleaned_data.get("password")
+        password = form.cleaned_data.get("password1")
         if password:
             self.object.set_password(password)
             self.object.save(update_fields=["password"])

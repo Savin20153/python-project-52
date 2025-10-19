@@ -22,7 +22,7 @@ class SignupForm(UserCreationForm):
 
 class UserUpdateForm(forms.ModelForm):
     # Дополнительные поля для смены пароля (необязательные)
-    password = forms.CharField(
+    password1 = forms.CharField(
         label=_("Пароль"), widget=forms.PasswordInput, required=False
     )
     password2 = forms.CharField(
@@ -41,7 +41,7 @@ class UserUpdateForm(forms.ModelForm):
 
     def clean(self):
         cleaned = super().clean()
-        p1 = cleaned.get("password")
+        p1 = cleaned.get("password1")
         p2 = cleaned.get("password2")
         if p1 or p2:
             if not p1 or not p2:
