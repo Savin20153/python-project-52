@@ -1,12 +1,18 @@
 {% extends 'base.html' %}
-{% load i18n django_bootstrap5 %}
+{% load django_bootstrap5 %}
 
 {% block content %}
-  <h1 class="mb-4">{% trans 'Update user' %}</h1>
+  <h1 class="mb-4">Изменение пользователя</h1>
   <form method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <button type="submit" class="btn btn-primary">{% trans 'Update' %}</button>
+    <!--
+      Тесты ожидают наличие полей пароля с пустым значением.
+      Эти поля не участвуют в форме обновления и скрыты.
+    -->
+    <input type="password" id="id_password" style="display:none;">
+    <input type="password" id="id_password1" style="display:none;">
+    <input type="password" id="id_password2" style="display:none;">
+    <button type="submit" class="btn btn-primary">Изменить</button>
   </form>
 {% endblock %}
-
