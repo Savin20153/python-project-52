@@ -1,23 +1,24 @@
-{% extends 'base.html' %}
-{% load i18n %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
   <h1 class="mb-4">Пользователи</h1>
   <table class="table table-striped">
     <thead>
       <tr>
+        <th>ID</th>
         <th>Имя пользователя</th>
         <th>Полное имя</th>
-        <th>Email</th>
+        <th>Дата создания</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
       {% for user in users %}
       <tr>
+        <td>{{ user.id }}</td>
         <td>{{ user.username }}</td>
         <td>{{ user.get_full_name }}</td>
-        <td>{{ user.email }}</td>
+        <td>{{ user.date_joined|date:'d.m.Y H:i' }}</td>
         <td>
           <a class="btn btn-sm btn-outline-primary" href="{% url 'users_update' user.pk %}">Изменить</a>
           <a class="btn btn-sm btn-outline-danger" href="{% url 'users_delete' user.pk %}">Удалить</a>

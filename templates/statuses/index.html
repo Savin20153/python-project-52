@@ -1,14 +1,13 @@
-{% extends 'base.html' %}
-{% load i18n %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
-  <h1 class="mb-4">{% trans 'Statuses' %}</h1>
-  <a class="btn btn-primary mb-3" href="{% url 'statuses_create' %}">{% trans 'Create status' %}</a>
+  <h1 class="mb-4">Статусы</h1>
+  <a class="btn btn-primary mb-3" href="{% url 'statuses_create' %}">Создать статус</a>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>{% trans 'Name' %}</th>
-        <th>{% trans 'Created at' %}</th>
+        <th>Имя</th>
+        <th>Дата создания</th>
         <th></th>
       </tr>
     </thead>
@@ -16,14 +15,13 @@
       {% for status in statuses %}
       <tr>
         <td>{{ status.name }}</td>
-        <td>{{ status.created_at|date:'Y-m-d H:i' }}</td>
+        <td>{{ status.created_at|date:'d.m.Y H:i' }}</td>
         <td>
-          <a class="btn btn-sm btn-outline-primary" href="{% url 'statuses_update' status.pk %}">{% trans 'Edit' %}</a>
-          <a class="btn btn-sm btn-outline-danger" href="{% url 'statuses_delete' status.pk %}">{% trans 'Delete' %}</a>
+          <a class="btn btn-sm btn-outline-primary" href="{% url 'statuses_update' status.pk %}">Изменить</a>
+          <a class="btn btn-sm btn-outline-danger" href="{% url 'statuses_delete' status.pk %}">Удалить</a>
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 {% endblock %}
-

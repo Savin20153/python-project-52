@@ -1,25 +1,25 @@
-{% extends 'base.html' %}
-{% load i18n django_bootstrap5 %}
+﻿{% extends 'base.html' %}
+{% load django_bootstrap5 %}
 
 {% block content %}
-  <h1 class="mb-4">{% trans 'Tasks' %}</h1>
-  <a class="btn btn-primary mb-3" href="{% url 'tasks_create' %}">{% trans 'Create task' %}</a>
+  <h1 class="mb-4">Задачи</h1>
+  <a class="btn btn-primary mb-3" href="{% url 'tasks_create' %}">Создать задачу</a>
   <div class="card mb-3">
     <div class="card-body">
       <form method="get">
         {% bootstrap_form filter.form %}
-        <button type="submit" class="btn btn-primary">{% trans 'Show' %}</button>
+        <button type="submit" class="btn btn-primary">Показать</button>
       </form>
     </div>
   </div>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>{% trans 'Name' %}</th>
-        <th>{% trans 'Status' %}</th>
-        <th>{% trans 'Author' %}</th>
-        <th>{% trans 'Executor' %}</th>
-        <th>{% trans 'Created at' %}</th>
+        <th>Имя</th>
+        <th>Статус</th>
+        <th>Автор</th>
+        <th>Исполнитель</th>
+        <th>Дата создания</th>
         <th></th>
       </tr>
     </thead>
@@ -30,10 +30,10 @@
         <td>{{ task.status }}</td>
         <td>{{ task.author.get_full_name|default:task.author.username }}</td>
         <td>{{ task.executor|default:'' }}</td>
-        <td>{{ task.created_at|date:'Y-m-d H:i' }}</td>
+        <td>{{ task.created_at|date:'d.m.Y H:i' }}</td>
         <td>
-          <a class="btn btn-sm btn-outline-primary" href="{% url 'tasks_update' task.pk %}">{% trans 'Edit' %}</a>
-          <a class="btn btn-sm btn-outline-danger" href="{% url 'tasks_delete' task.pk %}">{% trans 'Delete' %}</a>
+          <a class="btn btn-sm btn-outline-primary" href="{% url 'tasks_update' task.pk %}">Изменить</a>
+          <a class="btn btn-sm btn-outline-danger" href="{% url 'tasks_delete' task.pk %}">Удалить</a>
         </td>
       </tr>
       {% endfor %}

@@ -1,5 +1,4 @@
 from django import forms
-from django.utils.translation import gettext_lazy as _
 
 from .models import Task
 from task_manager.labels.models import Label
@@ -9,7 +8,7 @@ class TaskForm(forms.ModelForm):
     labels = forms.ModelMultipleChoiceField(
         queryset=Label.objects.all(),
         required=False,
-        label=_('Labels'),
+        label='Метки',
         widget=forms.SelectMultiple,
     )
 
@@ -17,9 +16,9 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ['name', 'description', 'status', 'executor', 'labels']
         labels = {
-            'name': _('Name'),
-            'description': _('Description'),
-            'status': _('Status'),
-            'executor': _('Executor'),
-            'labels': _('Labels'),
+            'name': 'Имя',
+            'description': 'Описание',
+            'status': 'Статус',
+            'executor': 'Исполнитель',
+            'labels': 'Метки',
         }

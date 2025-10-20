@@ -1,14 +1,13 @@
-{% extends 'base.html' %}
-{% load i18n %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
-  <h1 class="mb-4">{% trans 'Labels' %}</h1>
-  <a class="btn btn-primary mb-3" href="{% url 'labels_create' %}">{% trans 'Create label' %}</a>
+  <h1 class="mb-4">Метки</h1>
+  <a class="btn btn-primary mb-3" href="{% url 'labels_create' %}">Создать метку</a>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>{% trans 'Name' %}</th>
-        <th>{% trans 'Created at' %}</th>
+        <th>Имя</th>
+        <th>Дата создания</th>
         <th></th>
       </tr>
     </thead>
@@ -16,14 +15,13 @@
       {% for label in labels %}
       <tr>
         <td>{{ label.name }}</td>
-        <td>{{ label.created_at|date:'Y-m-d H:i' }}</td>
+        <td>{{ label.created_at|date:'d.m.Y H:i' }}</td>
         <td>
-          <a class="btn btn-sm btn-outline-primary" href="{% url 'labels_update' label.pk %}">{% trans 'Edit' %}</a>
-          <a class="btn btn-sm btn-outline-danger" href="{% url 'labels_delete' label.pk %}">{% trans 'Delete' %}</a>
+          <a class="btn btn-sm btn-outline-primary" href="{% url 'labels_update' label.pk %}">Изменить</a>
+          <a class="btn btn-sm btn-outline-danger" href="{% url 'labels_delete' label.pk %}">Удалить</a>
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 {% endblock %}
-

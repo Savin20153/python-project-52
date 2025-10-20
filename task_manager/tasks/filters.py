@@ -1,6 +1,5 @@
 from django import forms
 import django_filters
-from django.utils.translation import gettext_lazy as _
 
 from .models import Task
 from task_manager.statuses.models import Status
@@ -13,23 +12,26 @@ User = get_user_model()
 
 class TaskFilter(django_filters.FilterSet):
     status = django_filters.ModelChoiceFilter(
-        queryset=Status.objects.all(), label=_('Status')
+        queryset=Status.objects.all(), label='Статус'
     )
     executor = django_filters.ModelChoiceFilter(
-        queryset=User.objects.all(), label=_('Executor')
+        queryset=User.objects.all(), label='Исполнитель'
     )
-    # Primary (singular) label field as in the demo
+    # Единственное поле выбора метки, отображается в форме
     label = django_filters.ModelChoiceFilter(
-        field_name='labels', queryset=Label.objects.all(), label=_('Labels')
-    )
-    # Backward-compatible alias if tests expect "labels"
-    labels = django_filters.ModelChoiceFilter(
-        field_name='labels', queryset=Label.objects.all(), label=_('Labels')
+        field_name='labels', queryset=Label.objects.all(), label='Метка'
     )
 
     self_tasks = django_filters.BooleanFilter(
-        method='filter_self_tasks', widget=forms.CheckboxInput, label=_('Only my tasks')
+        method='filter_self_tasks', widget=forms.CheckboxInput, label='Только мои задачи'
     )
+
+    def __init__(self, data=None, queryset=None, *, request=None, prefix=None):
+        # Принимаем параметр labels как синоним label, но не дублируем поле в форме
+        if data and 'labels' in data and 'label' not in data:
+            data = data.copy()
+            data['label'] = data.get('labels')
+        super().__init__(data=data, queryset=queryset, request=request, prefix=prefix)
 
     def filter_self_tasks(self, queryset, name, value):
         if value:
@@ -38,5 +40,4 @@ class TaskFilter(django_filters.FilterSet):
 
     class Meta:
         model = Task
-        fields = ['status', 'executor', 'label', 'labels', 'self_tasks']
-
+        fields = ['status', 'executor', 'label', 'self_tasks']
