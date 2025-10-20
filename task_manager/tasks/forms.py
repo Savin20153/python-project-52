@@ -12,6 +12,15 @@ class TaskForm(forms.ModelForm):
         widget=forms.SelectMultiple,
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        executor_field = self.fields.get('executor')
+        if executor_field:
+            executor_field.label = 'Исполнитель'
+            executor_field.label_from_instance = (
+                lambda user: user.get_full_name() or user.username
+            )
+
     class Meta:
         model = Task
         fields = ['name', 'description', 'status', 'executor', 'labels']
