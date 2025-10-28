@@ -35,6 +35,12 @@ class TaskFilter(django_filters.FilterSet):
             data['label'] = data.get('labels')
         super().__init__(data=data, queryset=queryset, request=request, prefix=prefix)
 
+        executor_field = self.form.fields.get('executor')
+        if executor_field:
+            executor_field.label_from_instance = (
+                lambda user: user.get_full_name() or user.username
+            )
+
     def filter_self_tasks(self, queryset, name, value):
         if value:
             return queryset.filter(author=self.request.user)
