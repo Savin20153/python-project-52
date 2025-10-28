@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.deletion import ProtectedError
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -46,8 +47,8 @@ class StatusDeleteView(LoginRequiredMixin, DeleteView):
         self.object = self.get_object()
         try:
             response = super().post(request, *args, **kwargs)
-            messages.success(self.request, _("Статус успешно удален"))
+            messages.success(request, _("Статус успешно удален"))
             return response
         except ProtectedError:
             messages.error(self.request, _("Невозможно удалить статус, потому что он используется"))
-            return self.get(request, *args, **kwargs)
+            return HttpResponseRedirect(self.success_url)
