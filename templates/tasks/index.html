@@ -29,7 +29,11 @@
         <td><a href="{% url 'tasks_show' task.pk %}">{{ task.name }}</a></td>
         <td>{{ task.status }}</td>
         <td>{{ task.author.get_full_name|default:task.author.username }}</td>
-        <td>{{ task.executor|default:'' }}</td>
+        <td>
+          {% if task.executor %}
+            {{ task.executor.get_full_name|default:task.executor.username }}
+          {% endif %}
+        </td>
         <td>{{ task.created_at|date:'d.m.Y H:i' }}</td>
         <td>
           <a class="btn btn-sm btn-outline-primary" href="{% url 'tasks_update' task.pk %}">Изменить</a>

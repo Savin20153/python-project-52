@@ -7,7 +7,11 @@
       <h4 class="card-title">{{ task.name }}</h4>
       <p class="card-text"><strong>Статус:</strong> {{ task.status }}</p>
       <p class="card-text"><strong>Автор:</strong> {{ task.author.get_full_name|default:task.author.username }}</p>
-      <p class="card-text"><strong>Исполнитель:</strong> {{ task.executor|default:'' }}</p>
+      <p class="card-text"><strong>Исполнитель:</strong>
+        {% if task.executor %}
+          {{ task.executor.get_full_name|default:task.executor.username }}
+        {% endif %}
+      </p>
       {% if task.labels.exists %}
         <p class="card-text">
           <strong>Метки:</strong>
