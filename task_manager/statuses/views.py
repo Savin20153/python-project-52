@@ -4,10 +4,10 @@ from django.db.models.deletion import ProtectedError
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
-from .models import Status
 from .forms import StatusForm
+from .models import Status
 
 
 class StatusListView(LoginRequiredMixin, ListView):
@@ -50,5 +50,8 @@ class StatusDeleteView(LoginRequiredMixin, DeleteView):
             messages.success(request, _("Статус успешно удален"))
             return response
         except ProtectedError:
-            messages.error(self.request, _("Невозможно удалить статус, потому что он используется"))
+            messages.error(
+                self.request,
+                _("Невозможно удалить статус, потому что он используется"),
+            )
             return HttpResponseRedirect(self.success_url)

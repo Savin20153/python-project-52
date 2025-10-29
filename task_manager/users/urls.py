@@ -1,12 +1,11 @@
 from django.urls import path
 
 from .views import (
-    UsersListView,
     UserCreateView,
-    UserUpdateView,
     UserDeleteView,
+    UsersListView,
+    UserUpdateView,
 )
-
 
 urlpatterns = [
     path('', UsersListView.as_view(), name='users_index'),

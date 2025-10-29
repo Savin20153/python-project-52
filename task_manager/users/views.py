@@ -1,14 +1,12 @@
 from django.contrib import messages
-from django.db.models.deletion import ProtectedError
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth import update_session_auth_hash
+from django.db.models.deletion import ProtectedError
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from .forms import SignupForm, UserUpdateForm
-
 
 User = get_user_model()
 
@@ -22,10 +20,16 @@ class UsersListView(ListView):
 class OnlySelfMixin(UserPassesTestMixin):
     def test_func(self):
         obj = self.get_object()
-        return self.request.user.is_authenticated and obj.pk == self.request.user.pk
+        return (
+            self.request.user.is_authenticated
+            and obj.pk == self.request.user.pk
+        )
 
     def handle_no_permission(self):
-        messages.error(self.request, _("У вас нет прав для изменения другого пользователя"))
+        messages.error(
+            self.request,
+            _("У вас нет прав для изменения другого пользователя"),
+        )
         return self.get_no_permission_redirect()
 
     def get_no_permission_redirect(self):
@@ -40,7 +44,10 @@ class UserCreateView(CreateView):
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        messages.success(self.request, _("Пользователь успешно зарегистрирован"))
+        messages.success(
+            self.request,
+            _("Пользователь успешно зарегистрирован"),
+        )
         return super().form_valid(form)
 
 
@@ -58,7 +65,10 @@ class UserUpdateView(LoginRequiredMixin, OnlySelfMixin, UpdateView):
             self.object.set_password(password)
             self.object.save(update_fields=["password"])
             update_session_auth_hash(self.request, self.object)
-        messages.success(self.request, _("Пользователь успешно изменен"))
+        messages.success(
+            self.request,
+            _("Пользователь успешно изменен"),
+        )
         return response
 
 
@@ -74,5 +84,11 @@ class UserDeleteView(LoginRequiredMixin, OnlySelfMixin, DeleteView):
             messages.success(self.request, _("Пользователь успешно удален"))
             return response
         except ProtectedError:
-            messages.error(self.request, _("Невозможно удалить пользователя, потому что он используется"))
+            messages.error(
+                self.request,
+                _(
+                    "Невозможно удалить пользователя, потому что он "
+                    "используется"
+                ),
+            )
             return self.get(request, *args, **kwargs)

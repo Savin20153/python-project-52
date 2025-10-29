@@ -9,9 +9,10 @@ It uses environment variables for secrets and database configuration.
 
 import os
 from pathlib import Path
+
+import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
-import dj_database_url
 
 # Load environment variables from a .env file if present
 load_dotenv()
@@ -26,7 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 if not SECRET_KEY:
-    raise ImproperlyConfigured("Необходимо задать переменную окружения SECRET_KEY.")
+    raise ImproperlyConfigured(
+        "Необходимо задать переменную окружения SECRET_KEY."
+    )
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
@@ -35,7 +38,11 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 _allowed_hosts_env = os.getenv("ALLOWED_HOSTS")
 _render_host = os.getenv("RENDER_EXTERNAL_HOSTNAME")
 if _allowed_hosts_env:
-    ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts_env.split(",") if h.strip()]
+    ALLOWED_HOSTS = [
+        h.strip()
+        for h in _allowed_hosts_env.split(",")
+        if h.strip()
+    ]
 else:
     ALLOWED_HOSTS = ["webserver", "localhost", "127.0.0.1"]
     # Automatically allow Render external hostname if present
@@ -110,16 +117,28 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'UserAttributeSimilarityValidator'
+        ),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'MinimumLengthValidator'
+        ),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'CommonPasswordValidator'
+        ),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'NumericPasswordValidator'
+        ),
     },
 ]
 

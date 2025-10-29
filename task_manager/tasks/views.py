@@ -2,14 +2,12 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
 from django_filters.views import FilterView
 
-from .models import Task
-from .forms import TaskForm
-
-
 from .filters import TaskFilter
+from .forms import TaskForm
+from .models import Task
 
 
 class TaskListView(LoginRequiredMixin, FilterView):
@@ -51,7 +49,10 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
 class OnlyAuthorDeleteMixin(UserPassesTestMixin):
     def test_func(self):
         obj = self.get_object()
-        return self.request.user.is_authenticated and obj.author_id == self.request.user.id
+        return (
+            self.request.user.is_authenticated
+            and obj.author_id == self.request.user.id
+        )
 
     def handle_no_permission(self):
         messages.error(self.request, _("Задачу может удалить только ее автор"))

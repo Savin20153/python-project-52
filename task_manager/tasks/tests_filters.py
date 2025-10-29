@@ -1,11 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 
-from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
-from .models import Task
+from task_manager.statuses.models import Status
 
+from .models import Task
 
 User = get_user_model()
 
@@ -13,20 +13,34 @@ User = get_user_model()
 class TaskFilterTests(TestCase):
     def setUp(self):
         self.password = 'StrongPass123!'
-        self.author = User.objects.create_user(username='author', password=self.password)
-        self.other = User.objects.create_user(username='other', password=self.password)
+        self.author = User.objects.create_user(
+            username='author',
+            password=self.password,
+        )
+        self.other = User.objects.create_user(
+            username='other',
+            password=self.password,
+        )
         self.status_new = Status.objects.create(name='New')
         self.status_done = Status.objects.create(name='Done')
         self.label_bug = Label.objects.create(name='bug')
         self.label_ui = Label.objects.create(name='ui')
 
         self.task1 = Task.objects.create(
-            name='T1', description='', status=self.status_new, author=self.author, executor=self.other
+            name='T1',
+            description='',
+            status=self.status_new,
+            author=self.author,
+            executor=self.other,
         )
         self.task1.labels.add(self.label_bug)
 
         self.task2 = Task.objects.create(
-            name='T2', description='', status=self.status_done, author=self.other, executor=self.author
+            name='T2',
+            description='',
+            status=self.status_done,
+            author=self.other,
+            executor=self.author,
         )
         self.task2.labels.add(self.label_ui)
 
@@ -64,4 +78,3 @@ class TaskFilterTests(TestCase):
         self.assertEqual(resp.status_code, 200)
         tasks = list(resp.context['tasks'])
         self.assertEqual({t.name for t in tasks}, {'T1'})
-

@@ -1,11 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 
-from .models import Label
 from task_manager.statuses.models import Status
 from task_manager.tasks.models import Task
 
+from .models import Label
 
 User = get_user_model()
 
@@ -14,7 +14,10 @@ class LabelsCrudTests(TestCase):
     def setUp(self):
         self.password = 'StrongPass123!'
         self.user = User.objects.create_user(
-            username='user1', password=self.password, first_name='U', last_name='One'
+            username='user1',
+            password=self.password,
+            first_name='U',
+            last_name='One',
         )
 
     def test_list_requires_login(self):
@@ -61,10 +64,14 @@ class LabelsCrudTests(TestCase):
         self.assertFalse(Label.objects.filter(pk=label.pk).exists())
         # Create again and link to task -> deletion blocked
         label = Label.objects.create(name='feature')
-        task = Task.objects.create(name='T', description='', status=status, author=self.user)
+        task = Task.objects.create(
+            name='T',
+            description='',
+            status=status,
+            author=self.user,
+        )
         task.labels.add(label)
         url = reverse('labels_delete', args=[label.pk])
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(Label.objects.filter(pk=label.pk).exists())
-

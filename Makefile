@@ -30,3 +30,9 @@ start: run
 
 start:
 	uv run gunicorn -w 5 -b 0.0.0.0:$(PORT) task_manager.wsgi
+
+lint:
+	uv run ruff check task_manager
+
+lint-fix:
+	uv run ruff check task_manager --fix

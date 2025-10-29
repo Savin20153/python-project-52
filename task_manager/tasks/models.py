@@ -1,10 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth import get_user_model
 
-from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
-
+from task_manager.statuses.models import Status
 
 User = get_user_model()
 
@@ -38,7 +37,10 @@ class Task(models.Model):
         related_name='tasks_assigned',
         verbose_name=_('Executor'),
     )
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Created at'),
+    )
 
     class Meta:
         verbose_name = _('Task')

@@ -1,9 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 
 from .models import Status
-
 
 User = get_user_model()
 
@@ -12,7 +11,10 @@ class StatusesCrudAuthTests(TestCase):
     def setUp(self):
         self.password = 'StrongPass123!'
         self.user = User.objects.create_user(
-            username='user1', password=self.password, first_name='U', last_name='One'
+            username='user1',
+            password=self.password,
+            first_name='U',
+            last_name='One',
         )
 
     def test_list_requires_login(self):
@@ -53,4 +55,3 @@ class StatusesCrudAuthTests(TestCase):
         resp = self.client.post(url)
         self.assertRedirects(resp, reverse('statuses_index'))
         self.assertFalse(Status.objects.filter(pk=status.pk).exists())
-

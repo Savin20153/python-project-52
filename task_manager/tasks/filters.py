@@ -1,11 +1,11 @@
-from django import forms
 import django_filters
-
-from .models import Task
-from task_manager.statuses.models import Status
-from task_manager.labels.models import Label
+from django import forms
 from django.contrib.auth import get_user_model
 
+from task_manager.labels.models import Label
+from task_manager.statuses.models import Status
+
+from .models import Task
 
 User = get_user_model()
 
@@ -29,11 +29,17 @@ class TaskFilter(django_filters.FilterSet):
     )
 
     def __init__(self, data=None, queryset=None, *, request=None, prefix=None):
-        # Принимаем параметр labels как синоним label, но не дублируем поле в форме
+        # Принимаем параметр labels как синоним label.
+        # Избегаем дублирования поля в форме.
         if data and 'labels' in data and 'label' not in data:
             data = data.copy()
             data['label'] = data.get('labels')
-        super().__init__(data=data, queryset=queryset, request=request, prefix=prefix)
+        super().__init__(
+            data=data,
+            queryset=queryset,
+            request=request,
+            prefix=prefix,
+        )
 
         executor_field = self.form.fields.get('executor')
         if executor_field:

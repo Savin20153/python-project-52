@@ -3,10 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
-from .models import Label
 from .forms import LabelForm
+from .models import Label
 
 
 class LabelListView(LoginRequiredMixin, ListView):
@@ -45,7 +45,10 @@ class LabelDeleteView(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         if hasattr(self.object, 'tasks') and self.object.tasks.exists():
-            messages.error(self.request, _("Невозможно удалить метку, потому что она используется"))
+            messages.error(
+                self.request,
+                _("Невозможно удалить метку, потому что она используется"),
+            )
             return HttpResponseRedirect(self.success_url)
         response = super().post(request, *args, **kwargs)
         messages.success(request, _("Метка успешно удалена"))
