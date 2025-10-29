@@ -54,7 +54,7 @@ class OnlyAuthorDeleteMixin(UserPassesTestMixin):
         return self.request.user.is_authenticated and obj.author_id == self.request.user.id
 
     def handle_no_permission(self):
-        messages.error(self.request, _("Задачу может удалить только её автор"))
+        messages.error(self.request, _("Задачу может удалить только ее автор"))
         from django.shortcuts import redirect
 
         return redirect('tasks_index')
