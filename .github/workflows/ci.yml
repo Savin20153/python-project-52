@@ -15,6 +15,8 @@ jobs:
         python-version: ["3.12"]
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
@@ -38,7 +40,7 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=Savin20153_python-project-52
-            -Dsonar.organization=Savin20153
+            -Dsonar.organization=savin20153
             -Dsonar.python.version=3.12
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.coverage.exclusions=**/tests/**,manage.py,task_manager/manage.py
