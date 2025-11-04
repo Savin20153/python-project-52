@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
@@ -48,8 +49,7 @@ class LabelDeleteView(LoginRequiredMixin, DeleteView):
                 self.request,
                 _("Невозможно удалить метку, потому что она используется"),
             )
-            context = self.get_context_data(object=self.object)
-            return self.render_to_response(context)
+            return HttpResponseRedirect(self.success_url)
         response = super().post(request, *args, **kwargs)
         messages.success(request, _("Метка успешно удалена"))
         return response
