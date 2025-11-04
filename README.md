@@ -25,7 +25,8 @@ https://python-task-manager-4t2f.onrender.com/
 
 1. Склонировать репозиторий:
 ```
-git@github.com:Savin20153/python-project-52.git```
+git@github.com:Savin20153/python-project-52.git
+```
 
 2. Прейти в директорию проекта:
 ```
