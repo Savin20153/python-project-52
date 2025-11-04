@@ -73,5 +73,5 @@ class LabelsCrudTests(TestCase):
         task.labels.add(label)
         url = reverse('labels_delete', args=[label.pk])
         resp = self.client.post(url)
-        self.assertEqual(resp.status_code, 200)
+        self.assertRedirects(resp, reverse('labels_index'))
         self.assertTrue(Label.objects.filter(pk=label.pk).exists())
