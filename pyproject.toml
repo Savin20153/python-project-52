@@ -3,7 +3,7 @@ name = "hexlet-code"
 version = "0.1.0"
 description = "Task Manager Django app"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
     "Django>=4.2,<5",
     "gunicorn>=21.2",

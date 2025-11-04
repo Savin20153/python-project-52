@@ -8,6 +8,7 @@ build:
 
 install:
 	uv pip install --system -e . && uv pip install --system rollbar
+	uv pip install coverage
 
 migrate:
 	uv run python manage.py migrate --noinput
@@ -36,3 +37,10 @@ lint:
 
 lint-fix:
 	uv run ruff check task_manager --fix
+
+test:
+	uv run python manage.py test
+
+test-coverage:
+	uv run python -m coverage run manage.py test
+	uv run python -m coverage xml -o coverage.xml

@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         # we want to test our package on several versions of Python
-        python-version: ["3.10"]
+        python-version: ["3.12"]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
@@ -25,3 +25,19 @@ jobs:
       - name: Run linter
         run: |
           make lint
+      - name: Run tests with coverage
+        run: |
+          make test-coverage
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=Savin20153_python-project-52
+            -Dsonar.organization=Savin20153
+            -Dsonar.python.version=3.12
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.coverage.exclusions=**/tests/**,manage.py,task_manager/manage.py
+            -Dsonar.exclusions=**/tests/**,task_manager/manage.py,manage.py
