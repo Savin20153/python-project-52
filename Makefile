@@ -7,6 +7,7 @@ build:
 	./build.sh
 
 install:
+	rm -rf .venv  # ensure fresh virtualenv in Render
 	uv venv
 	uv pip install -e . && uv pip install rollbar coverage
 
