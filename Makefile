@@ -7,8 +7,8 @@ build:
 	./build.sh
 
 install:
-	uv pip install --system -e . && uv pip install --system rollbar
-	uv pip install --system coverage
+	uv venv
+	uv pip install -e . && uv pip install rollbar coverage
 
 migrate:
 	uv run python manage.py migrate --noinput

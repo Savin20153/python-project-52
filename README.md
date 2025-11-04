@@ -37,7 +37,7 @@ cd python-project-52
 make install
 ```
 
-4. В проекте иcпользуется База данных <a href="https://www.postgresql.org/" rel="nofollow">PostrgreSQL</a>.
+4. В проекте иcпользуется База данных <a href="https://www.postgresql.org/" rel="nofollow">PostrgreSQL</a>
    Она должна быть установлена, и сервер запущен.
 
 
